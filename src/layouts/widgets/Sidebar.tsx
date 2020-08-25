@@ -1,5 +1,5 @@
 import React, {FunctionComponent, MouseEvent} from "react";
-import {useLocation, BrowserRouter as Router, Link} from 'react-router-dom';
+import {useLocation, Link} from 'react-router-dom';
 import {routeProps} from "../../globalRoutes";
 import classNames from "classnames";
 
@@ -11,18 +11,18 @@ type SidebarLinkItemProps = {
     prop: routeProps,
     prefix?: string
 }
-// If a route is simple link(with prop path and without prop views)
 
+// If a route is simple link(with prop path and without prop views)
 type SidebarLinkListProps = {
     prop: routeProps,
-    handClick: (event: MouseEvent,name:string) => any,
+    handClick: (event: MouseEvent, name: string) => any,
     collapseOpened: boolean
 
 }
 const SidebarLinkItem: FunctionComponent<SidebarLinkItemProps> = ({prop, prefix}) => {
     const realLink = prefix === undefined ? prop.path : prefix + prop.path
     let location = useLocation().pathname;
-    return <li className={classNames("nav-item",{active: location === realLink})}>
+    return <li className={classNames("nav-item", {active: location === realLink})}>
         <Link className={"nav-link"} to={realLink}>
             <i className={"material-icons"}>{prop.icon}</i>
             <p>{prop.name}</p>
@@ -34,7 +34,8 @@ const SidebarLinkItem: FunctionComponent<SidebarLinkItemProps> = ({prop, prefix}
 // If a route is link DrawerList(with prop views, ignore path)
 const SidebarLinkList: FunctionComponent<SidebarLinkListProps> = ({prop, handClick, collapseOpened}) => {
     return <li className={"nav-item"}>
-        <a className={"nav-link"} aria-expanded={collapseOpened} onClick={(event)=>handClick(event,prop.name)} href={prop.path}>
+        <a className={"nav-link"} aria-expanded={collapseOpened} onClick={(event) => handClick(event, prop.name)}
+           href={prop.path}>
             <i className="material-icons">{prop.icon}</i>
             <p> {prop.name}
                 <b className="caret"></b>
@@ -68,9 +69,9 @@ export const Sidebar: FunctionComponent<SidebarProps> = ({routes}) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [collapseState, setCollapseState] = React.useState<collapse>(state)
 
-    const clickHandler = (event: MouseEvent,name:string) => {
+    const clickHandler = (event: MouseEvent, name: string) => {
         event.preventDefault()
-        setCollapseState({...collapseState,[name]:!collapseState[name]})
+        setCollapseState({...collapseState, [name]: !collapseState[name]})
     }
 
     return <div className="sidebar" data-color="green" data-background-color={"black"}>
@@ -81,10 +82,11 @@ export const Sidebar: FunctionComponent<SidebarProps> = ({routes}) => {
         </div>
         <div className="sidebar-wrapper">
             <ul className="nav">
-                    {routes.map((routeProp, index) => routeProp.views === undefined ?
-                        <SidebarLinkItem prop={routeProp} key={index} /> :
-                        <SidebarLinkList key={index} prop={routeProp} handClick={clickHandler} collapseOpened={collapseState[routeProp.name]}/>
-                    )}
+                {routes.map((routeProp, index) => routeProp.views === undefined ?
+                    <SidebarLinkItem prop={routeProp} key={index} /> :
+                    <SidebarLinkList key={index} prop={routeProp} handClick={clickHandler}
+                                     collapseOpened={collapseState[routeProp.name]} />
+                )}
             </ul>
         </div>
         <div style={bgImageStyle} className={"sidebar-background"}></div>
