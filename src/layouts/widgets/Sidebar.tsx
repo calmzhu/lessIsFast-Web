@@ -1,5 +1,5 @@
 import React, {FunctionComponent, MouseEvent} from "react";
-import {useLocation} from 'react-router-dom';
+import {useLocation, BrowserRouter as Router, Link} from 'react-router-dom';
 import {routeProps} from "../../globalRoutes";
 import classNames from "classnames";
 
@@ -23,10 +23,10 @@ const SidebarLinkItem: FunctionComponent<SidebarLinkItemProps> = ({prop, prefix}
     const realLink = prefix === undefined ? prop.path : prefix + prop.path
     let location = useLocation().pathname;
     return <li className={classNames("nav-item",{active: location === realLink})}>
-        <a className={"nav-link"} href={realLink}>
+        <Link className={"nav-link"} to={realLink}>
             <i className={"material-icons"}>{prop.icon}</i>
             <p>{prop.name}</p>
-        </a>
+        </Link>
     </li>
 }
 
@@ -81,10 +81,10 @@ export const Sidebar: FunctionComponent<SidebarProps> = ({routes}) => {
         </div>
         <div className="sidebar-wrapper">
             <ul className="nav">
-                {routes.map((routeProp, index) => routeProp.views === undefined ?
-                    <SidebarLinkItem prop={routeProp} key={index} /> :
-                    <SidebarLinkList key={index} prop={routeProp} handClick={clickHandler} collapseOpened={collapseState[routeProp.name]}/>
-                )}
+                    {routes.map((routeProp, index) => routeProp.views === undefined ?
+                        <SidebarLinkItem prop={routeProp} key={index} /> :
+                        <SidebarLinkList key={index} prop={routeProp} handClick={clickHandler} collapseOpened={collapseState[routeProp.name]}/>
+                    )}
             </ul>
         </div>
         <div style={bgImageStyle} className={"sidebar-background"}></div>
